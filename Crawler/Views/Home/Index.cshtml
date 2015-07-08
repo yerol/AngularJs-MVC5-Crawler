@@ -1,0 +1,64 @@
+﻿<crawler-main class="crawler-container">
+	<div class="well well-lg">
+		<form ng-submit="crawlerController.onSubmit()">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="input-group">
+						<input type="text" class="form-control" ng-model="crawlerController.model.startUrl" placeholder="Enter a URL to crawl..">
+						<span class="input-group-btn">
+							<input type="submit" ng-disabled="crawlerController.state.fetching" class="btn btn-primary" value="GO">
+						</span>
+					</div>
+				</div>
+			</div>
+			<span class="error-message" ng-bind="crawlerController.model.errorMessage"></span>
+		</form>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			# of Links: {{crawlerController.model.internalLinksCount}}
+		</div>
+		<div class="col-sm-3">
+			# of External Links: {{crawlerController.model.externalLinksCount}}
+		</div>
+		<div class="col-sm-3">
+			# of Images: {{crawlerController.model.internalImageLinksCount}}
+		</div>
+		<div class="col-sm-4">
+			# of External Images: {{crawlerController.model.externalImageLinksCount}}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>Links</h2>
+			<ul>
+				<li ng-repeat="link in crawlerController.model.internalLinks track by link">
+					<span ng-bind="link"></span>
+				</li>
+			</ul>
+			<hr />
+			<h2>External Links</h2>
+			<ul>
+				<li ng-repeat="link in crawlerController.model.externalLinks track by link">
+					<span ng-bind="link"></span>
+				</li>
+			</ul>
+			<hr />
+			<h2>Image Links</h2>
+			<ul>
+				<li ng-repeat="link in crawlerController.model.internalImageLinks track by link">
+					<span ng-bind="link"></span>
+				</li>
+			</ul>
+			<hr />
+			<h2>External Image Links</h2>
+			<ul>
+				<li ng-repeat="link in crawlerController.model.externalImageLinks track by link">
+					<span ng-bind="link"></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</crawler-main>
+
