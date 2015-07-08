@@ -8,4 +8,13 @@ Using Bootstrap for simple styling.
 
 ## Limitations
 Only parses Anchors with valid HREF attribute and IMG elements with valid SRC attribute
+
 Subdomains of a given url is treated as a different domain i.e. www.bbc.co.uk is not the same domain as bbc.co.uk
+
+## Running
+Download the source files
+Open up Crawler.sln file with Visual Studio 2013+
+Hit play button to build and run
+
+## License
+No license. Feel free to use it however you like. I take no responsibility for anything this app may cause.
