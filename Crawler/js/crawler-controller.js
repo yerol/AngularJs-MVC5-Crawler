@@ -99,7 +99,8 @@ Crawler.controller('Crawler.Controller', [
 			 */
 			fetchUrlError: function (response) {
 				this.model.fetchPromise = null;
-				this.model.errorMessage = 'Error';
+				this.model.errorMessage = 'Failed to fetch provided url: ' + response.config.params.url;
+				this.model.successMessage = '';
 				this.state.fetching = false;
 			}
 		};
@@ -118,6 +119,7 @@ Crawler.controller('Crawler.Controller', [
 			startUrl: '',
 			fetchPromise: null,
 			errorMessage: '',
+			successMessage: '',
 			internalLinks: {},
 			externalLinks: {},
 			internalImageLinks: {},
@@ -146,21 +148,32 @@ Crawler.controller('Crawler.Controller', [
 		 * Submit handler for the GO button
 		 */
 		this.onSubmit = function () {
+			// Clear any existing messages
+			this.model.errorMessage = '';
+			this.model.successMessage = '';
+
 			// Start only if we have a valid url
-			if (this.model.startUrl) {
-
-				// Disable the button until crawling is complete
-				this.state.fetching = true;
-
-				// Clear the lists
-				this.clear();
-
-				// Cache the requested url's domain
-				this.model.domain = crawlerFactory.extractDomain(this.model.startUrl);
-
-				// Push the start url into the queue to kick start
-				$scope.urlsToBeFetched.push(this.model.startUrl);
+			if (!angular.isString(this.model.startUrl) || this.model.startUrl.length === 0) {
+				this.model.errorMessage = 'Provided url is not valid';
+				return;
 			}
+			if (this.model.startUrl.indexOf('http://') === -1 && this.model.startUrl.indexOf('https://') === -1) {
+				this.model.errorMessage = 'Provided url must start with "http://" or "https://"';
+				return;
+			}
+
+			// Disable the button until crawling is complete
+			this.state.fetching = true;
+			this.model.successMessage = 'Crawling.. This might take a while, please be patient.';
+
+			// Clear the lists
+			this.clear();
+
+			// Cache the requested url's domain
+			this.model.domain = crawlerFactory.extractDomain(this.model.startUrl);
+
+			// Push the start url into the queue to kick start
+			$scope.urlsToBeFetched.push(this.model.startUrl);
 		};
 
 		// Queue for urls to be fetched and parsed
@@ -169,7 +182,7 @@ Crawler.controller('Crawler.Controller', [
 		/*
 		 * Watch handler for the url queue
 		 */ 
-		$scope.$watch('urlsToBeFetched', function () {
+		$scope.$watch('urlsToBeFetched', function (newValue, oldValue) {
 			// Fetch a new url only if there is a valid one in the queue and there are no requests in progress
 			if (angular.isArray($scope.urlsToBeFetched) && $scope.urlsToBeFetched.length > 0 && this.model.fetchPromise === null) {
 
@@ -187,6 +200,10 @@ Crawler.controller('Crawler.Controller', [
 			else if (angular.isArray($scope.urlsToBeFetched) && $scope.urlsToBeFetched.length === 0) {
 				// Crawling is complete, enable the button
 				this.state.fetching = false;
+				//Avoids showinf the message on initial load as angular calls watch handler on init
+				if (newValue !== oldValue) {
+					this.model.successMessage = 'Crawling success!';
+				}
 			}
 		}.bind(this),true);
 
