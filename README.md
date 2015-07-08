@@ -13,7 +13,9 @@ Subdomains of a given url is treated as a different domain i.e. www.bbc.co.uk is
 
 ## Running
 Download the source files
+
 Open up Crawler.sln file with Visual Studio 2013+
+
 Hit play button to build and run
 
 ## License
