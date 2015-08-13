@@ -6,6 +6,8 @@ Asp.Net MVC5 for backend
 Angular Js with jQuery for front-end
 Using Bootstrap for simple styling.
 
+Still in development. Needs quite few optimizations.
+
 ## Limitations
 Only parses Anchors with valid HREF attribute and IMG elements with valid SRC attribute
 
