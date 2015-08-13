@@ -11,6 +11,8 @@ Only parses Anchors with valid HREF attribute and IMG elements with valid SRC at
 
 Subdomains of a given url is treated as a different domain i.e. www.bbc.co.uk is not the same domain as bbc.co.uk
 
+No tests just yet
+
 ## Running
 Download the source files
 
